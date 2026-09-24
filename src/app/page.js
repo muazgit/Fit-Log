@@ -1,10 +1,9 @@
-import Image from "next/image";
+import Hero from '../components/Hero';
 
 export default function Home() {
   return (
     <main>
-      <h1>FITLOG</h1>
-      <p>Workout Library</p>
+      <Hero />
     </main>
   );
 }
