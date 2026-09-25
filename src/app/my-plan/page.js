@@ -7,7 +7,16 @@ import { useFitLog } from '../../context/FitLogContext';
 import { toast } from 'react-toastify';
 
 export default function MyPlan() {
-  const { plan, setPlan, saved, setSaved } = useFitLog();
+  const {
+    plan: storedPlan,
+    setPlan,
+    saved: storedSaved,
+    setSaved,
+    loaded,
+  } = useFitLog();
+
+  const plan = loaded ? storedPlan : [];
+  const saved = loaded ? storedSaved : [];
 
   const [activeTab, setActiveTab] = useState('plan');
   const [sortBy, setSortBy] = useState('duration');

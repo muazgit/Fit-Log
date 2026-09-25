@@ -1,8 +1,18 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 
 const FitLogContext = createContext();
+
+const subscribeToHydration = () => () => {};
+const getClientHydrationSnapshot = () => true;
+const getServerHydrationSnapshot = () => false;
 
 function getStoredData(key) {
   if (typeof window === 'undefined') return [];
@@ -17,6 +27,11 @@ function getStoredData(key) {
 export function FitLogProvider({ children }) {
   const [plan, setPlan] = useState(() => getStoredData('fitlog-plan'));
   const [saved, setSaved] = useState(() => getStoredData('fitlog-saved'));
+  const loaded = useSyncExternalStore(
+    subscribeToHydration,
+    getClientHydrationSnapshot,
+    getServerHydrationSnapshot,
+  );
 
   // Save plan
   useEffect(() => {
@@ -35,7 +50,7 @@ export function FitLogProvider({ children }) {
         setPlan,
         saved,
         setSaved,
-        loaded: true,
+        loaded,
       }}
     >
       {children}

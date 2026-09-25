@@ -45,7 +45,10 @@ export default function Home() {
         {/* Cards */}
 
         {loading ? (
-          <p className="text-gray-400">Loading workouts…</p>
+          <div className="flex items-center gap-3 py-8 text-sm text-gray-400">
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-700 border-t-lime-400" />
+            Loading workouts…
+          </div>
         ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {workouts.map(workout => (

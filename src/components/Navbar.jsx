@@ -34,14 +34,20 @@ export default function Navbar() {
       <div className="flex items-center gap-6">
         <Link href="/my-plan" className="text-sm font-medium text-gray-300">
           Plan{' '}
-          <span className="ml-1 rounded-full bg-lime-400 px-2 py-1 text-xs font-bold text-black">
+          <span
+            suppressHydrationWarning
+            className="ml-1 rounded-full bg-lime-400 px-2 py-1 text-xs font-bold text-black"
+          >
             {loaded ? plan.length : 0}
           </span>
         </Link>
 
         <Link href="/my-plan" className="text-sm font-medium text-gray-400">
           Saved{' '}
-          <span className="ml-1 rounded-full border border-gray-600 px-2 py-1 text-xs text-gray-300">
+          <span
+            suppressHydrationWarning
+            className="ml-1 rounded-full border border-gray-600 px-2 py-1 text-xs text-gray-300"
+          >
             {loaded ? saved.length : 0}
           </span>
         </Link>

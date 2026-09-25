@@ -4,10 +4,13 @@ import { useFitLog } from '../context/FitLogContext';
 import { toast } from 'react-toastify';
 
 export default function WorkoutActions({ workout }) {
-  const { plan, setPlan, saved, setSaved } = useFitLog();
+  const { plan, setPlan, saved, setSaved, loaded } = useFitLog();
 
-  const isInPlan = plan.some(item => item.id === workout.id);
-  const isSaved = saved.some(item => item.id === workout.id);
+  const isInPlan = loaded && plan.some(item => item.id === workout.id);
+
+  const isSaved = loaded && saved.some(item => item.id === workout.id);
+
+  const isPlanFull = loaded && plan.length >= 5;
 
   const handleAddToPlan = () => {
     if (isInPlan) return;
@@ -25,13 +28,26 @@ export default function WorkoutActions({ workout }) {
 
   return (
     <div className="mt-8 flex flex-wrap gap-4">
-      <button
-        onClick={handleAddToPlan}
-        disabled={isInPlan}
-        className="rounded-xl bg-lime-400 px-6 py-3 text-sm font-bold text-black transition hover:bg-lime-300 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isInPlan ? 'Added to plan' : "Add to today's plan"}
-      </button>
+      {loaded ? (
+        <button
+          onClick={handleAddToPlan}
+          disabled={isInPlan || isPlanFull}
+          className="rounded-xl bg-lime-400 px-6 py-3 text-sm font-bold text-black transition hover:bg-lime-300 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isInPlan
+            ? 'Added to plan'
+            : isPlanFull
+              ? 'Plan is full'
+              : "Add to today's plan"}
+        </button>
+      ) : (
+        <button
+          disabled
+          className="rounded-xl bg-lime-400 px-6 py-3 text-sm font-bold text-black opacity-50"
+        >
+          Add to today&apos;s plan
+        </button>
+      )}
 
       <button
         onClick={handleSave}
