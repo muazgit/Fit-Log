@@ -2,6 +2,8 @@ import './globals.css';
 import Navbar from '../components/Navbar';
 import { Inter, Oswald } from 'next/font/google';
 import { FitLogProvider } from '../context/FitLogContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -20,6 +22,15 @@ export default function RootLayout({ children }) {
         <FitLogProvider>
           <Navbar />
           {children}
+          <ToastContainer
+            position="bottom-right"
+            autoClose={2500}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            theme="dark"
+          />
         </FitLogProvider>
       </body>
     </html>

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useFitLog } from '../../context/FitLogContext';
+import { toast } from 'react-toastify';
 
 export default function MyPlan() {
   const { plan, setPlan, saved, setSaved } = useFitLog();
@@ -40,15 +41,21 @@ export default function MyPlan() {
   );
 
   const handleRemove = id => {
+    const workout = workouts.find(item => item.id === id);
+
     if (activeTab === 'plan') {
       setPlan(plan.filter(workout => workout.id !== id));
+      toast.success(`${workout.name} removed from plan`);
     } else {
       setSaved(saved.filter(workout => workout.id !== id));
+      toast.success(`${workout.name} removed from saved`);
     }
   };
 
   const handleMarkAsDone = id => {
+    const workout = plan.find(item => item.id === id);
     setPlan(plan.filter(workout => workout.id !== id));
+    toast.success(`${workout.name} marked as done`);
   };
 
   return (

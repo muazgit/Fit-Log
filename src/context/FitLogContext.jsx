@@ -4,40 +4,29 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const FitLogContext = createContext();
 
+function getStoredData(key) {
+  if (typeof window === 'undefined') return [];
+
+  try {
+    return JSON.parse(localStorage.getItem(key) || '[]');
+  } catch {
+    return [];
+  }
+}
+
 export function FitLogProvider({ children }) {
-  const [plan, setPlan] = useState([]);
-  const [saved, setSaved] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-
-  // Load data from localStorage
-  useEffect(() => {
-    const storedPlan = localStorage.getItem('fitlog-plan');
-    const storedSaved = localStorage.getItem('fitlog-saved');
-
-    if (storedPlan) {
-      setPlan(JSON.parse(storedPlan));
-    }
-
-    if (storedSaved) {
-      setSaved(JSON.parse(storedSaved));
-    }
-
-    setLoaded(true);
-  }, []);
+  const [plan, setPlan] = useState(() => getStoredData('fitlog-plan'));
+  const [saved, setSaved] = useState(() => getStoredData('fitlog-saved'));
 
   // Save plan
   useEffect(() => {
-    if (!loaded) return;
-
     localStorage.setItem('fitlog-plan', JSON.stringify(plan));
-  }, [plan, loaded]);
+  }, [plan]);
 
   // Save saved workouts
   useEffect(() => {
-    if (!loaded) return;
-
     localStorage.setItem('fitlog-saved', JSON.stringify(saved));
-  }, [saved, loaded]);
+  }, [saved]);
 
   return (
     <FitLogContext.Provider
@@ -46,7 +35,7 @@ export function FitLogProvider({ children }) {
         setPlan,
         saved,
         setSaved,
-        loaded,
+        loaded: true,
       }}
     >
       {children}
