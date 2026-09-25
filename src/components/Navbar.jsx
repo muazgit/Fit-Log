@@ -1,6 +1,9 @@
+'use client';
 import Link from 'next/link';
+import { useFitLog } from '../context/FitLogContext';
 
 export default function Navbar() {
+  const { plan, saved } = useFitLog();
   return (
     <nav className="flex items-center justify-between border-b border-[#1c1f26] px-4 py-4 md:px-8">
       {/* Logo */}
@@ -30,16 +33,16 @@ export default function Navbar() {
       {/* Counters */}
       <div className="flex items-center gap-6">
         <Link href="/my-plan" className="text-sm font-medium text-gray-300">
-          Plan
-          <span className="ml-2 rounded-full bg-lime-400 px-2.5 py-1 text-xs font-bold text-black">
-            0
+          Plan{' '}
+          <span className="ml-1 rounded-full bg-lime-400 px-2 py-1 text-xs font-bold text-black">
+            {plan.length}
           </span>
         </Link>
 
         <Link href="/my-plan" className="text-sm font-medium text-gray-400">
-          Saved
-          <span className="ml-2 rounded-full border border-gray-600 px-2.5 py-1 text-xs text-gray-300">
-            0
+          Saved{' '}
+          <span className="ml-1 rounded-full border border-gray-600 px-2 py-1 text-xs text-gray-300">
+            {saved.length}
           </span>
         </Link>
       </div>

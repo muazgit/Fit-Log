@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Hero from '../components/Hero';
 import WorkoutCard from '../components/WorkoutCard';
 
+
 export default function Home() {
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);

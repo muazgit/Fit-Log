@@ -1,6 +1,7 @@
 import './globals.css';
 import Navbar from '../components/Navbar';
 import { Inter, Oswald } from 'next/font/google';
+import { FitLogProvider } from '../context/FitLogContext';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -16,8 +17,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${oswald.variable}`}>
-        <Navbar />
-        {children}
+        <FitLogProvider>
+          <Navbar />
+          {children}
+        </FitLogProvider>
       </body>
     </html>
   );
