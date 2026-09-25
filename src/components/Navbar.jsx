@@ -1,17 +1,26 @@
 'use client';
 import Link from 'next/link';
 import { useFitLog } from '../context/FitLogContext';
+import Image from 'next/image';
 
 export default function Navbar() {
   const { plan, saved, loaded } = useFitLog();
   return (
     <nav className="flex items-center justify-between border-b border-[#1c1f26] px-4 py-4 md:px-8">
       {/* Logo */}
-      <div>
-        <h2 className="font-oswald text-2xl font-semibold tracking-wide">
+      <Link href="/" className="flex items-center gap-2">
+        <Image
+          src="/assets/logo.png"
+          alt="FITLOG"
+          width={24}
+          height={24}
+          className="h-5 w-5 object-contain"
+        />
+
+        <h2 className="font-oswald text-2xl font-semibold tracking-wide text-white">
           FITLOG
         </h2>
-      </div>
+      </Link>
 
       {/* Navigation */}
       <div className="flex items-center gap-8">
@@ -34,10 +43,7 @@ export default function Navbar() {
       <div className="flex items-center gap-6">
         <Link href="/my-plan" className="text-sm font-medium text-gray-300">
           Plan{' '}
-          <span
-            suppressHydrationWarning
-            className="ml-1 rounded-full bg-lime-400 px-2 py-1 text-xs font-bold text-black"
-          >
+          <span className="ml-1 rounded-full bg-lime-400 px-2 py-1 text-xs font-bold text-black">
             {loaded ? plan.length : 0}
           </span>
         </Link>

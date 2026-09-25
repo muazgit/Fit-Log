@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import WorkoutActions from '../../../components/WorkoutActions';
+import { notFound } from 'next/navigation';
 
 export default async function WorkoutDetails({ params }) {
   const { id } = await params;
@@ -7,6 +8,10 @@ export default async function WorkoutDetails({ params }) {
   const res = await fetch(`https://api.abcz.workers.dev/api/fitlog/${id}`, {
     cache: 'no-store',
   });
+
+  if (!res.ok) {
+    notFound();
+  }
 
   const workout = await res.json();
 

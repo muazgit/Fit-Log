@@ -4,6 +4,7 @@ import { Inter, Oswald } from 'next/font/google';
 import { FitLogProvider } from '../context/FitLogContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from '../components/Footer';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -18,8 +19,7 @@ const oswald = Oswald({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${oswald.variable}`}>
+      <body className={`${inter.variable} ${oswald.variable}`}>
         <FitLogProvider>
           <Navbar />
           {children}
@@ -33,6 +33,7 @@ export default function RootLayout({ children }) {
             theme="dark"
           />
         </FitLogProvider>
+        <Footer />
       </body>
     </html>
   );

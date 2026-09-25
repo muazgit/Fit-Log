@@ -20,10 +20,22 @@ export default function MyPlan() {
 
   const [activeTab, setActiveTab] = useState('plan');
   const [sortBy, setSortBy] = useState('duration');
+  const [search, setSearch] = useState('');
 
   const workouts = activeTab === 'plan' ? plan : saved;
 
-  const sortedWorkouts = [...workouts].sort((a, b) => {
+  const filteredWorkouts = workouts.filter(workout => {
+    const query = search.toLowerCase().trim();
+
+    if (!query) return true;
+
+    return (
+      workout.name.toLowerCase().includes(query) ||
+      workout.muscleGroups?.some(group => group.toLowerCase().includes(query))
+    );
+  });
+
+  const sortedWorkouts = [...filteredWorkouts].sort((a, b) => {
     if (sortBy === 'duration') {
       return a.duration - b.duration;
     }
@@ -138,20 +150,29 @@ export default function MyPlan() {
             Saved
           </button>
         </div>
+        {/* Search */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <input
+            type="text"
+            value={search}
+            onChange={event => setSearch(event.target.value)}
+            placeholder="Search workouts..."
+            className="w-full rounded-xl border border-[#1c1f26] bg-[#14161c] px-4 py-2 text-sm text-gray-300 outline-none placeholder:text-gray-600 focus:border-gray-500 sm:w-56"
+          />
+          {/* Sort */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-500">Sort By</span>
 
-        {/* Sort */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">Sort By</span>
-
-          <select
-            value={sortBy}
-            onChange={event => setSortBy(event.target.value)}
-            className="rounded-xl border border-[#1c1f26] bg-[#14161c] px-4 py-2 text-sm text-gray-300 outline-none"
-          >
-            <option value="duration">Duration</option>
-            <option value="calories">Calories</option>
-            <option value="rating">Rating</option>
-          </select>
+            <select
+              value={sortBy}
+              onChange={event => setSortBy(event.target.value)}
+              className="rounded-xl border border-[#1c1f26] bg-[#14161c] px-4 py-2 text-sm text-gray-300 outline-none"
+            >
+              <option value="duration">Duration</option>
+              <option value="calories">Calories</option>
+              <option value="rating">Rating</option>
+            </select>
+          </div>
         </div>
       </section>
 
