@@ -2,12 +2,12 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useState } from 'react';
 import { useFitLog } from '../../context/FitLogContext';
 import { toast } from 'react-toastify';
-import { useSearchParams } from 'next/navigation';
 
-export default function MyPlan() {
+function MyPlanContent() {
   const {
     plan: storedPlan,
     setPlan,
@@ -21,7 +21,6 @@ export default function MyPlan() {
   const plan = loaded ? storedPlan : [];
   const saved = loaded ? storedSaved : [];
   const searchParams = useSearchParams();
-
   const activeTab = searchParams.get('saved') === 'true' ? 'saved' : 'plan';
 
   const [sortBy, setSortBy] = useState('duration');
@@ -69,6 +68,8 @@ export default function MyPlan() {
   const handleRemove = id => {
     const workout = workouts.find(item => item.id === id);
 
+    if (!workout) return;
+
     if (activeTab === 'plan') {
       setPlan(plan.filter(workout => workout.id !== id));
       toast.success(`${workout.name} removed from plan`);
@@ -80,13 +81,19 @@ export default function MyPlan() {
 
   const handleMarkAsDone = id => {
     const workout = plan.find(item => item.id === id);
+
     if (!workout) return;
 
     setCompleted([
       ...completed,
-      { ...workout, completionId: `${workout.id}-${completed.length + 1}` },
+      {
+        ...workout,
+        completionId: `${workout.id}-${completed.length + 1}`,
+      },
     ]);
+
     setPlan(plan.filter(workout => workout.id !== id));
+
     toast.success(`${workout.name} marked as done`);
   };
 
@@ -139,8 +146,9 @@ export default function MyPlan() {
       <section className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Tabs */}
         <div className="flex w-fit rounded-xl border border-[#1c1f26] bg-[#14161c] p-1">
-          <button
-            onClick={() => setActiveTab('plan')}
+          <Link
+            href="/my-plan"
+            aria-current={activeTab === 'plan' ? 'page' : undefined}
             className={`rounded-lg px-5 py-2 text-sm transition ${
               activeTab === 'plan'
                 ? 'bg-[#252a34] font-semibold text-white'
@@ -148,10 +156,11 @@ export default function MyPlan() {
             }`}
           >
             Today&apos;s Plan
-          </button>
+          </Link>
 
-          <button
-            onClick={() => setActiveTab('saved')}
+          <Link
+            href="/my-plan?saved=true"
+            aria-current={activeTab === 'saved' ? 'page' : undefined}
             className={`rounded-lg px-5 py-2 text-sm transition ${
               activeTab === 'saved'
                 ? 'bg-[#252a34] font-semibold text-white'
@@ -159,10 +168,11 @@ export default function MyPlan() {
             }`}
           >
             Saved
-          </button>
+          </Link>
         </div>
-        {/* Search */}
+
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          {/* Search */}
           <input
             type="text"
             value={search}
@@ -170,6 +180,7 @@ export default function MyPlan() {
             placeholder="Search workouts..."
             className="w-full rounded-xl border border-[#1c1f26] bg-[#14161c] px-4 py-2 text-sm text-gray-300 outline-none placeholder:text-gray-600 focus:border-gray-500 sm:w-56"
           />
+
           {/* Sort */}
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-500">Sort By</span>
@@ -298,6 +309,7 @@ export default function MyPlan() {
           <h2 className="mb-4 font-oswald text-2xl font-bold uppercase text-white">
             Completed Today
           </h2>
+
           <div className="space-y-4">
             {completed.map(workout => (
               <article
@@ -311,14 +323,17 @@ export default function MyPlan() {
                   height={80}
                   className="h-20 w-36 shrink-0 rounded-xl object-cover object-top"
                 />
+
                 <div className="min-w-0 flex-1">
                   <h3 className="font-oswald text-lg font-bold uppercase text-white">
                     {workout.name}
                   </h3>
+
                   <p className="mt-1 text-sm text-gray-400">
                     {workout.equipment}
                   </p>
                 </div>
+
                 <span className="self-start rounded-full border border-lime-400/40 px-3 py-1 text-xs font-semibold text-lime-400 sm:self-center">
                   ✓ Done
                 </span>
@@ -328,5 +343,22 @@ export default function MyPlan() {
         </section>
       )}
     </main>
+  );
+}
+
+export default function MyPlan() {
+  return (
+    <Suspense
+      fallback={
+        <main className="px-4 py-10 md:px-8">
+          <div className="flex min-h-[300px] items-center justify-center gap-3 text-sm text-gray-400">
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-700 border-t-lime-400" />
+            Loading workouts...
+          </div>
+        </main>
+      }
+    >
+      <MyPlanContent />
+    </Suspense>
   );
 }
