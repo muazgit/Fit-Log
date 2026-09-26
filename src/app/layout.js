@@ -6,6 +6,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../components/Footer';
 
+export const metadata = {
+  title: 'Fit Log',
+};
+
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
