@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function Hero() {
   return (
@@ -24,7 +24,21 @@ export default function Hero() {
             className="mt-8 inline-flex items-center gap-2 rounded-md bg-lime-400 px-6 py-3 text-sm font-bold text-black transition hover:bg-lime-300"
           >
             BROWSE WORKOUTS
-            <span>→</span>
+            <svg
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="h-4 w-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 12h14m-6-6 6 6-6 6"
+              />
+            </svg>
           </a>
         </div>
 
