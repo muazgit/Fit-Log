@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function WorkoutCard({ workout }) {
+export default function WorkoutCard({ workout, aboveTheFold = false }) {
   return (
     <Link
       href={`/workouts/${workout.id}`}
@@ -13,6 +13,7 @@ export default function WorkoutCard({ workout }) {
         alt={workout.name}
         width={740}
         height={500}
+        loading={aboveTheFold ? 'eager' : 'lazy'}
         className="h-64 w-full object-cover object-top"
       />
 

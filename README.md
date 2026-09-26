@@ -23,3 +23,6 @@ FitLog is a responsive workout library and workout planning website. Users can b
 - Remove workouts from plan or saved list
 - Persistent plan and saved data using LocalStorage
 - Responsive design for mobile, tablet, and desktop
+
+
+

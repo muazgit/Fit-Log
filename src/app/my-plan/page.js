@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useFitLog } from '../../context/FitLogContext';
 import { toast } from 'react-toastify';
+import { useSearchParams } from 'next/navigation';
 
 export default function MyPlan() {
   const {
@@ -12,13 +13,17 @@ export default function MyPlan() {
     setPlan,
     saved: storedSaved,
     setSaved,
+    completed,
+    setCompleted,
     loaded,
   } = useFitLog();
 
   const plan = loaded ? storedPlan : [];
   const saved = loaded ? storedSaved : [];
+  const searchParams = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState('plan');
+  const activeTab = searchParams.get('saved') === 'true' ? 'saved' : 'plan';
+
   const [sortBy, setSortBy] = useState('duration');
   const [search, setSearch] = useState('');
 
@@ -75,6 +80,12 @@ export default function MyPlan() {
 
   const handleMarkAsDone = id => {
     const workout = plan.find(item => item.id === id);
+    if (!workout) return;
+
+    setCompleted([
+      ...completed,
+      { ...workout, completionId: `${workout.id}-${completed.length + 1}` },
+    ]);
     setPlan(plan.filter(workout => workout.id !== id));
     toast.success(`${workout.name} marked as done`);
   };
@@ -178,7 +189,12 @@ export default function MyPlan() {
 
       {/* Workout List / Empty State */}
       <section className="mt-6">
-        {sortedWorkouts.length === 0 ? (
+        {!loaded ? (
+          <div className="flex min-h-[300px] items-center justify-center gap-3 text-sm text-gray-400">
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-700 border-t-lime-400" />
+            Loading workouts…
+          </div>
+        ) : sortedWorkouts.length === 0 ? (
           <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-dashed border-[#2a2d35]">
             <div className="text-center">
               <h2 className="font-oswald text-xl font-bold uppercase text-white">
@@ -276,6 +292,41 @@ export default function MyPlan() {
           </div>
         )}
       </section>
+
+      {loaded && activeTab === 'plan' && completed.length > 0 && (
+        <section className="mt-10">
+          <h2 className="mb-4 font-oswald text-2xl font-bold uppercase text-white">
+            Completed Today
+          </h2>
+          <div className="space-y-4">
+            {completed.map(workout => (
+              <article
+                key={workout.completionId}
+                className="flex flex-col gap-4 rounded-2xl border border-[#1c1f26] bg-[#14161c] p-4 sm:flex-row sm:items-center"
+              >
+                <Image
+                  src={workout.image}
+                  alt={workout.name}
+                  width={144}
+                  height={80}
+                  className="h-20 w-36 shrink-0 rounded-xl object-cover object-top"
+                />
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-oswald text-lg font-bold uppercase text-white">
+                    {workout.name}
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-400">
+                    {workout.equipment}
+                  </p>
+                </div>
+                <span className="self-start rounded-full border border-lime-400/40 px-3 py-1 text-xs font-semibold text-lime-400 sm:self-center">
+                  ✓ Done
+                </span>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

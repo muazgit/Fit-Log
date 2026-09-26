@@ -5,9 +5,12 @@ import { notFound } from 'next/navigation';
 export default async function WorkoutDetails({ params }) {
   const { id } = await params;
 
-  const res = await fetch(`https://api.abcz.workers.dev/api/fitlog/${id}`, {
-    cache: 'no-store',
-  });
+  const res = await fetch(
+    `https://api.api-store.workers.dev/api/fitlog/${id}`,
+    {
+      cache: 'no-store',
+    },
+  );
 
   if (!res.ok) {
     notFound();
@@ -25,6 +28,7 @@ export default async function WorkoutDetails({ params }) {
             alt={workout.name}
             width={740}
             height={900}
+            loading="eager"
             className="h-auto w-full rounded-b-2xl object-cover object-top"
           />
         </div>
