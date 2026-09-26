@@ -237,7 +237,7 @@ function MyPlanContent() {
                   alt={workout.name}
                   width={144}
                   height={80}
-                  className="h-20 w-36 shrink-0 rounded-xl object-cover object-top"
+                  className="h-48 w-full shrink-0 rounded-xl object-cover object-top md:h-20 md:w-36"
                 />
 
                 {/* Workout Info */}
@@ -253,17 +253,32 @@ function MyPlanContent() {
                   {/* Stats */}
                   <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-gray-400">
                     <span className="flex items-center gap-1.5">
-                      <span className="text-lime-400">◷</span>
+                      <Image
+                        src="/assets/icons/clock.png"
+                        alt=""
+                        width={16}
+                        height={16}
+                      />
                       {workout.duration} min
                     </span>
 
                     <span className="flex items-center gap-1.5">
-                      <span className="text-lime-400">●</span>
+                      <Image
+                        src="/assets/icons/flame.png"
+                        alt=""
+                        width={16}
+                        height={16}
+                      />
                       {workout.caloriesBurned} kcal
                     </span>
 
                     <span className="flex items-center gap-1.5">
-                      <span className="text-lime-400">☆</span>
+                      <Image
+                        src="/assets/icons/star.png"
+                        alt=""
+                        width={16}
+                        height={16}
+                      />
                       {workout.rating}
                     </span>
                   </div>
@@ -314,14 +329,14 @@ function MyPlanContent() {
             {completed.map(workout => (
               <article
                 key={workout.completionId}
-                className="flex flex-col gap-4 rounded-2xl border border-[#1c1f26] bg-[#14161c] p-4 sm:flex-row sm:items-center"
+                className="flex flex-col gap-4 rounded-2xl border border-[#1c1f26] bg-[#14161c] p-4 md:flex-row md:items-center"
               >
                 <Image
                   src={workout.image}
                   alt={workout.name}
                   width={144}
                   height={80}
-                  className="h-20 w-36 shrink-0 rounded-xl object-cover object-top"
+                  className="h-48 w-full shrink-0 rounded-xl object-cover object-top md:h-20 md:w-36"
                 />
 
                 <div className="min-w-0 flex-1">
@@ -332,6 +347,38 @@ function MyPlanContent() {
                   <p className="mt-1 text-sm text-gray-400">
                     {workout.equipment}
                   </p>
+
+                  <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-gray-400">
+                    <span className="flex items-center gap-1.5">
+                      <Image
+                        src="/assets/icons/clock.png"
+                        alt=""
+                        width={16}
+                        height={16}
+                      />
+                      {workout.duration} min
+                    </span>
+
+                    <span className="flex items-center gap-1.5">
+                      <Image
+                        src="/assets/icons/flame.png"
+                        alt=""
+                        width={16}
+                        height={16}
+                      />
+                      {workout.caloriesBurned} kcal
+                    </span>
+
+                    <span className="flex items-center gap-1.5">
+                      <Image
+                        src="/assets/icons/star.png"
+                        alt=""
+                        width={16}
+                        height={16}
+                      />
+                      {workout.rating}
+                    </span>
+                  </div>
                 </div>
 
                 <span className="self-start rounded-full border border-lime-400/40 px-3 py-1 text-xs font-semibold text-lime-400 sm:self-center">
