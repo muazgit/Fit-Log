@@ -300,7 +300,24 @@ function MyPlanContent() {
                       onClick={() => handleMarkAsDone(workout.id)}
                       className="rounded-full bg-lime-400 px-5 py-2 text-sm font-bold text-black transition hover:bg-lime-300"
                     >
-                      ✓ Mark as Done
+                      <span className="inline-flex items-center gap-2">
+                        <svg
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          className="h-4 w-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m5 12 4 4L19 6"
+                          />
+                        </svg>
+                        Mark as Done
+                      </span>
                     </button>
                   )}
 
